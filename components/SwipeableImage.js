@@ -1,13 +1,13 @@
 import React from "react";
-import { View, Image, StyleSheet, Text } from "react-native";
+import { View, Image, StyleSheet, Text, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 //Description could be too long, abriv if needed.
 //Add image
-
+//Testing scrollview
 export default function SwipeableImage({ cocktails, willLike, willPass }) {
   return (
-    <View>
+    <ScrollView>
       <Image source={cocktails.image} style={styles.photo} />
       {willLike && (
         <View style={styles.likeBox}>
@@ -33,7 +33,7 @@ export default function SwipeableImage({ cocktails, willLike, willPass }) {
           </Text>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

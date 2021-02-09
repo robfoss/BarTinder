@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { RectButton } from "react-native-gesture-handler";
-import SwipeableImage from "../screens/SwipeableImage";
+import SwipeableImage from "./SwipeableImage";
 
 //test and adjust rightActions to add to users favorites
 //useState to keep track of onSwipeableWillLeft prop

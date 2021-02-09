@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Alert } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
 
-import TopBar from "../components/TopBar";
+import TopBar from '../components/TopBar'
 import BottomBar from "../components/BottomBar";
 import Swipes from "../components/Swipes";
 
