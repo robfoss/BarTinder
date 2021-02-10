@@ -12,14 +12,14 @@ import Swipes from "../components/Swipes";
 //look-up useRef
 //look at gesture docs again for swipe handler
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [cocktails, setCocktails] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const swipesRef = useRef(null);
 
   const fetchCocktails = async () => {
     try {
-      const { data } = await axios.get("/cocktails");
+      const { data } = await axios.get("/api/cocktails");
       console.log(data[0])
       setCocktails(data);
     } catch (error) {

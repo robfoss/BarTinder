@@ -1,5 +1,6 @@
 {
   "main": "node_modules/expo/AppEntry.js",
+  "proxy": "https://42d7d2929136.ngrok.io",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",

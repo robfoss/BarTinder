@@ -5,17 +5,59 @@ import * as Animatable from 'react-native-animatable';
 import { LinearGradient } from 'expo-linear-gradient';
 import Feather from 'react-native-vector-icons/Feather';
 import { FontAwesome } from '@expo/vector-icons';
+import axios from 'axios'
+import { url } from '../config'
 
 
 export default function SignUpScreen({ navigation }) {
     const [data, setData] = useState({
-        email: '',
-        password: '',
+        // email: '',
+        // password: '',
         confirm_password: '',
         check_textInputChange: false,
         secureTextEntry: true,
         confirm_securityTextEntry: true,
     });
+
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    console.log(email, password)
+    let json = JSON.stringify({ email: email, password: password })
+
+    // let jsonkey = Object.keys(json)
+
+    // let final_key = JSON.parse(jsonkey)
+
+    // const processSignUp = async () => await fetch(`${url}/api/user/signup`, { method: 'post', body: json, headers: { 'Content-Type': 'application/json' } })
+    //     .then(resp => resp.json())
+    //     .then(data => data)
+
+
+    const processSignUp = async () => await axios.post(`${url}/api/user/signup`, json,
+        // {
+        //     hello: "you"
+        // },
+        {
+
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    )
+        .then((res) => {
+            console.log(res)
+            return res
+        })
+        // .then((res) => {
+        //     setEmail(res.email)
+        //     setPassword(res.password)
+        // })
+        .then(() => navigation.navigate('Home'))
+
+        .catch((err) => {
+            console.log(err)
+        })
 
 
     const textInputChange = (val) => {
@@ -85,7 +127,7 @@ export default function SignUpScreen({ navigation }) {
                         placeholder='Your Email'
                         style={styles.textInput}
                         autoCapitalize="none"
-                        onChangeText={(val) => textInputChange(val)}
+                        onChangeText={(val) => setEmail(val)}
                     />
                     {data.check_textInputChange ?
                         <Animatable.View
@@ -116,7 +158,7 @@ export default function SignUpScreen({ navigation }) {
                         secureTextEntry={data.secureTextEntry ? true : false}
                         style={styles.textInput}
                         autoCapitalize="none"
-                        onChangeText={(val) => handlePasswordChange(val)}
+                        onChangeText={(val) => setPassword(val)}
                     />
                     <TouchableOpacity
                         onPress={updateSecureTextEntry}
@@ -170,14 +212,18 @@ export default function SignUpScreen({ navigation }) {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.button}>
-                    <LinearGradient
-                        colors={['#121212', '#000']}
-                        style={styles.signIn}
+                    <TouchableOpacity
+                        onPress={() => processSignUp()}
                     >
-                        <Text style={[styles.textSign, {
-                            color: '#fff'
-                        }]}>Sign Up</Text>
-                    </LinearGradient>
+                        <LinearGradient
+                            colors={['#121212', '#000']}
+                            style={styles.signIn}
+                        >
+                            <Text style={[styles.textSign, {
+                                color: '#fff'
+                            }]}>Sign Up</Text>
+                        </LinearGradient>
+                    </TouchableOpacity>
 
                     <TouchableOpacity
                         onPress={() => navigation.navigate('SignInScreen')}
