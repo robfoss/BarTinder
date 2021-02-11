@@ -3,29 +3,39 @@ import { View, Text, StyleSheet, Alert } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
 
-import TopBar from "../components/TopBar";
+import TopBar from '../components/TopBar'
 import BottomBar from "../components/BottomBar";
 import Swipes from "../components/Swipes";
+import { url } from '../config';
 
 
 //look-up useEffect again - causing errors
 //look-up useRef
 //look at gesture docs again for swipe handler
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [cocktails, setCocktails] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const swipesRef = useRef(null);
 
   const fetchCocktails = async () => {
     try {
-      const { data } = await axios.get("/cocktails");
-      console.log(data[0])
-      setCocktails(data);
+      const res = await axios.get(`${url}/api/cocktails/cocktailcards`, {
+
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+
+
+      })
+      console.log('*************** HOME *************')
+      console.log(res.data)
+      setCocktails(res.data)
     } catch (error) {
       console.log(error);
       Alert.alert("Error getting cocktails", "", [
-        { text: "Retry", onPress: () => console.log(data[0]) },
+        { text: "Retry", onPress: () => console.log(error) },
       ]);
     }
   };
@@ -47,6 +57,7 @@ export default function Home() {
   const nextCocktail = () => {
     const nextIndex =
       cocktails.length - 2 === currentIndex ? 0 : currentIndex + 1;
+    setCurrentIndex(nextIndex);
   };
 
   const handLikePress = () => {
@@ -63,7 +74,7 @@ export default function Home() {
       <View style={styles.swipes}>
         {cocktails.length > 1 &&
           cocktails.map(
-            (cocktail, index) =>
+            (cocktails, index) =>
               currentIndex === index && (
                 <Swipes
                   key={index}

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { RectButton } from "react-native-gesture-handler";
-import SwipeableImage from "../screens/SwipeableImage";
+import SwipeableImage from "./SwipeableImage";
 
 //test and adjust rightActions to add to users favorites
 //useState to keep track of onSwipeableWillLeft prop
@@ -18,10 +18,12 @@ function Swipes({
   const [willLike, setWillLike] = useState(false);
   const [willPass, setWillPass] = useState(false);
   const renderLeftActions = () => {
+    console.log('************************* In swipes renderLeftActions *******************************')
+    console.log(cocktails)
     return (
       <RectButton style={styles.container}>
         <SwipeableImage
-          cocktails={cocktails[currentIndex] + 1}
+          cocktails={cocktails}
         ></SwipeableImage>
       </RectButton>
     );
@@ -30,11 +32,12 @@ function Swipes({
     return (
       <RectButton style={styles.container}>
         <SwipeableImage
-          cocktails={cocktails[currentIndex] + 1}
+          cocktails={cocktails}
         ></SwipeableImage>
       </RectButton>
     );
   };
+  console.log(cocktails)
   return (
     <Swipeable
       ref={swipesRef}
@@ -55,7 +58,7 @@ function Swipes({
       onSwipeableRightWillOpen={() => setWillPass(true)}
     >
       <SwipeableImage
-        cocktail={cocktails[currentIndex]}
+        cocktails={cocktails}
         willLike={willLike}
         willPass={willPass}
       />

@@ -1,181 +1,251 @@
-import React from "react";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  Platform,
-  TextInput,
-} from "react-native";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import { FontAwesome } from "@expo/vector-icons";
-import Feather from "react-native-vector-icons/Feather"; //Maybe what's causing error?
-//Go back over fontawesome icons.
-//Connect page to backend route
-//Search for new textinput field - autocapitalize =none
-//double styles need to be in array
+import React, { useState } from 'react'
+import { View, Text, TouchableOpacity, Dimensions, StyleSheet, Platform, TextInput, StatusBar } from 'react-native'
+import * as Animatable from 'react-native-animatable';
+// import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
+import Feather from 'react-native-vector-icons/Feather';
+import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome5 } from '@expo/vector-icons';
+import axios from 'axios'
+import { url } from '../config'
 
-const SignInScreen = () => {
-  const [showIcons, setShowIcons] = React.useState({
-    email: "",
-    password: "",
+export default function SignInScreen({ navigation }) {
+
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  let json = JSON.stringify({ email: email, password: password })
+
+  const processSignIn = async () => await axios.post(`${url}/api/user/login`, json,
+    {
+
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    }
+  )
+    .then((res) => {
+      console.log(res)
+      return res
+    })
+
+    .then(navigation.navigate('Home'))
+
+    .catch((err) => {
+      console.log(err)
+    })
+
+  const [data, setData] = useState({
+    // email: '',
+    // password: '',
     check_textInputChange: false,
-    secureTextEntry: true,
+    secureTextEntry: true
   });
 
-  const textInputChange = (value) => {
-    if (value.length != 0) {
-      setShowIcons({
-        ...showIcons,
-        email: value,
-        check_textInputChange: true,
+
+  const textInputChange = (val) => {
+    if (val.length !== 0) {
+      setData({
+        ...data,
+        email: val,
+        check_textInputChange: true
       });
     } else {
-      setShowIcons({
-        ...showIcons,
-        email: value,
-        check_textInputChange: false,
+      setData({
+        ...data,
+        email: val,
+        check_textInputChange: false
       });
     }
-  };
+  }
+
+  const handlePasswordChange = (val) => {
+    setData({
+      ...data,
+      password: val
+    })
+  }
+
+  const updateSecureTextEntry = () => {
+    setData({
+      ...data,
+      secureTextEntry: !data.secureTextEntry
+    })
+  }
+
+
+
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor='#009387' barStyle="light-content" />
       <View style={styles.header}>
-        <Text style={styles.text_header}>Cheers!</Text>
+        <Text style={styles.text_header}>Cheers!  <FontAwesome5 name='glass-cheers' color='#fff' size={30} /></Text>
+
       </View>
-      <View style={styles.footer}>
+      <Animatable.View
+        style={styles.footer}
+        animation="fadeInUpBig"
+
+      >
         <Text style={styles.text_footer}>Email</Text>
         <View style={styles.action}>
-          <FontAwesome name="user-o" color="#000" size={20} />
+          <FontAwesome
+            name='user-o'
+            color='#121212'
+            size={20}
+          />
           <TextInput
-            placeholder="Drink Responsibly and Never Drink and Drive"
+            placeholder='Your Email'
             style={styles.textInput}
             autoCapitalize="none"
-            onChangeText={(value) => textInputChange(value)}
+            onChangeText={(val) => setEmail(val)}
           />
-          {showIcons.textInputChange ? (
-            <Feather name="check-circle" color="#000" size={20} />
-          ) : null}
-        </View>
-        <Text
-          style={[
-            styles.text_footer,
-            {
-              marginTop: 35,
-            },
-          ]}
-        >
-          Password
-        </Text>
-        <View style={styles.action}>
-          <FontAwesome name="lock" color="#000" size={20} />
-          <TextInput
-            secureTextEntry={true}
-            placeholder="Password"
-            style={styles.textInput}
-            autoCapitalize="none"
-          />
-          <Feather name="eye-off" color="grey" size={20} />
-        </View>
-      </View>
-    </View>
-  );
-};
+          {data.check_textInputChange ?
+            <Animatable.View
+              animation="bounceIn"
+            >
 
-export default SignInScreen;
+              <Feather
+                name="check-circle"
+                color="green"
+                size={20}
+              />
+            </Animatable.View>
+            : null}
+
+        </View>
+        <Text style={[styles.text_footer, {
+          marginTop: 35
+
+        }]}>Password</Text>
+        <View style={styles.action}>
+          <Feather
+            name='lock'
+            color='#121212'
+            size={20}
+          />
+          <TextInput
+            placeholder='Password'
+            secureTextEntry={data.secureTextEntry ? true : false}
+            style={styles.textInput}
+            autoCapitalize="none"
+            onChangeText={(val) => setPassword(val)}
+          />
+          <TouchableOpacity
+            onPress={updateSecureTextEntry}
+          >
+            {data.secureTextEntry ?
+              <Feather
+                name="eye-off"
+                color="grey"
+                size={20}
+              />
+              :
+              <Feather
+                name="eye"
+                color="grey"
+                size={20}
+              />}
+          </TouchableOpacity>
+        </View>
+        <View style={styles.button}>
+          <TouchableOpacity
+            onPress={() => processSignIn()}
+          >
+            <LinearGradient
+              colors={['#121212', '#000']}
+              style={styles.signIn}
+            >
+              <Text style={[styles.textSign, {
+                color: '#fff'
+              }]}>Sign In</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('SignUpScreen')}
+            style={[styles.signIn, {
+              borderColor: '#000',
+              borderWidth: 1,
+              marginTop: 15
+            }]}
+          >
+            <Text style={[styles.textSign, {
+              color: '#000'
+            }]}> Sign Up</Text>
+          </TouchableOpacity>
+        </View>
+      </Animatable.View>
+    </View>
+  )
+}
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: '#000'
   },
   header: {
     flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
+    justifyContent: 'flex-end',
     paddingHorizontal: 20,
-    paddingBottom: 50,
+    paddingBottom: 50
   },
   footer: {
     flex: 3,
-    backgroundColor: "#ffff",
+    backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingVertical: 20,
-    paddingHorizontal: 30,
-    color: "#ffff",
+    paddingHorizontal: 20,
+    paddingVertical: 30
   },
   text_header: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 30,
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 30
   },
   text_footer: {
-    color: "#000",
-    fontWeight: "bold",
-    fontSize: 18,
+    color: '#121212',
+    fontSize: 18
   },
   action: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#f2f2f2",
-    paddingBottom: 5,
+    borderBottomColor: '#f2f2f2',
+    paddingBottom: 5
   },
   actionError: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#FF0000",
-    paddingBottom: 5,
+    borderBottomColor: '#FF0000',
+    paddingBottom: 5
   },
   textInput: {
     flex: 1,
-    marginTop: Platform.OS === "ios" ? 0 : -12,
+    marginTop: Platform.OS === 'ios' ? 0 : -12,
     paddingLeft: 10,
-    color: "#05375a",
+    color: '#121212',
   },
   errorMsg: {
-    color: "#FF0000",
+    color: '#FF0000',
     fontSize: 14,
   },
   button: {
-    alignItems: "center",
-    marginTop: 50,
-  },
-  logo: {
-    width: "",
-    height: "",
-    marginTop: 145,
-    marginLeft: 35,
-  },
-  title: {
-    color: "#000",
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-  text: {
-    color: "grey",
-    marginTop: 5,
+    alignItems: 'center',
+    marginTop: 50
   },
   signIn: {
-    width: 150,
-    height: 40,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 50,
-    flexDirection: "row",
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10
   },
   textSign: {
-    color: "white",
-    fontWeight: "bold",
-  },
-
-  customButton: {
-    padding: 20,
-    width: 200,
-    borderRadius: 20,
-  },
+    fontSize: 18,
+    fontWeight: 'bold'
+  }
 });
