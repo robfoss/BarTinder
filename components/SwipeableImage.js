@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Image, StyleSheet, Text, ScrollView } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
-
+import { url } from '../config';
 //Description could be too long, abriv if needed.
 //Add image
 //Testing scrollview
@@ -11,9 +11,15 @@ export default function SwipeableImage({ cocktails, willLike, willPass }) {
     console.log(cocktails.name)
     console.log(cocktails.image)
 
+
+    const image = {
+        uri: url + cocktails.image,
+    }
+
+
     return (
         <View>
-            <Image source={cocktails.image} style={styles.photo} />
+            <Image source={image} style={styles.photo} />
             {willLike && (
                 <View style={styles.likeBox}>
                     <Text style={{ ...styles.textPrimary, color: "#fe019a" }}>
