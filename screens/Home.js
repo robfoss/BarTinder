@@ -88,7 +88,7 @@ export default function Home({ navigation }) {
           )}
       </View>
       <BottomBar
-        handLikePress={handLikePress}
+        handleLikePress={handLikePress}
         handlePassPress={handlePassPress}
       />
     </View>
