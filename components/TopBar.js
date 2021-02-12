@@ -1,15 +1,30 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack'
 
 
-export default function TopBar() {
+
+
+
+
+const topbarStack = createStackNavigator()
+export default function TopBar({ navigation }) {
   return (
+
     <View style={styles.container}>
-      <FontAwesome5 name='search' size={28} color="#000" />
-      <FontAwesome5 name='glass-martini-alt' size={28} color="#000" />
-      <FontAwesome5 name='user' size={28} color="#000" />
+      <TouchableOpacity onPress={() => navigation.navigate('BarMap')}>
+        <FontAwesome5 name='search' size={28} color="#000" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <FontAwesome5 name='glass-martini-alt' size={28} color="#000" />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate('UserPage')}>
+        <FontAwesome5 name='user' size={28} color="#000" />
+      </TouchableOpacity>
     </View>
+
   )
 }
 

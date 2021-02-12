@@ -1,10 +1,18 @@
+
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Constants from 'expo-constants'
 import { NavigationContainer } from '@react-navigation/native';
-// import { url } from './config'
+import { url } from './config'
 import Home from './screens/Home'
 import Onboarding from './screens/Onboarding'
+import TopBar from './components/TopBar'
+import BarMap from './screens/BarMap'
+import SearchBar from './components/SearchBar';
+import Screen from './components/Screen';
+
+
+
 
 import RootStackScreen from './screens/RootStackScreen';
 

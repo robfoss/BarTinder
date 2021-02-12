@@ -6,8 +6,6 @@ import { url } from '../config';
 //Add image
 //Testing scrollview
 export default function SwipeableImage({ cocktails, willLike, willPass }) {
-    console.log('********************   88888888888   ***********************')
-    console.log(cocktails)
     console.log(cocktails.name)
     console.log(cocktails.image)
 
@@ -39,7 +37,7 @@ export default function SwipeableImage({ cocktails, willLike, willPass }) {
                     </Text>
                 </View>
                 <View style={styles.textRow}>
-                    <Text style={([styles.textSecondary], styles.textShadow)}>
+                    <Text numberOfLines={2} style={([styles.textSecondary], styles.textShadow)}>
                         {cocktails.description}
                     </Text>
                 </View>
@@ -71,7 +69,7 @@ const styles = StyleSheet.create({
         borderColor: "#30e7ed",
     },
     photo: {
-        height: "100%",
+        height: "99%",
         resizeMode: "cover",
         borderRadius: 20,
     },
