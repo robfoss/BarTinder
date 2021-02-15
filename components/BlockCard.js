@@ -8,14 +8,18 @@ import Subtitle from './Subtitle'
 
 
 
+
 // ********* FAVORITES PAGE/SEARCH RESULTS PAGE CARD LAYOUT *********
 
 
 
-const BlockCard = () => {
+const BlockCard = ({ favorites }) => {
+    const image = {
+        uri: url + favorites.image,
+    }
     return (
         <View style={styles.container}>
-            <Image source={image} style={style.image} />
+            <Image source={image} style={styles.image} />
             <View style={styles.contentContainer}>
                 <Title>{favorites.name}</Title>
                 <Subtitle>{favorites.description}</Subtitle>
@@ -39,7 +43,7 @@ const styles = StyleSheet.create({
 
     },
     image: {
-        width: '100%',
+        width: '70%',
         height: 600
     },
     contentContainer: {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Alert, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity, Dimensions, SafeAreaView } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
@@ -72,7 +72,6 @@ export default function Home({ navigation }) {
   }, []);
 
   const handleLike = (cocktail_id) => {
-    console.log('**************** 8888     HANDLELIKE   8888 ********************')
     console.log(cocktail_id)
     newFavorite(cocktail_id);
     nextCocktail();
@@ -101,10 +100,10 @@ export default function Home({ navigation }) {
   return (
 
 
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={[styles.topBarcontainer]}>
         <TouchableOpacity onPress={() => navigation.navigate('BarMap')}>
-          <FontAwesome5 name='search' size={28} color="#000" />
+          <FontAwesome5 name='search-location' size={28} color="#000" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <FontAwesome5 name='glass-martini-alt' size={28} color="#000" />
@@ -133,7 +132,7 @@ export default function Home({ navigation }) {
         handleLikePress={handLikePress}
         handlePassPress={handlePassPress}
       />
-    </View>
+    </SafeAreaView>
   );
 }
 

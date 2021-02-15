@@ -20,31 +20,40 @@ const BarMap = ({ navigation }) => {
 
     useEffect(() => {
         (async () => {
-            let { status } = await Location.requestPermissionsAsync();
-            if (status !== 'granted') {
-                setErrorMsg('Permission to access location was denied');
-            }
-            let location = await Location.getCurrentPositionAsync({});
+            // let { status } = await Location.requestPermissionsAsync();
+            // if (status !== 'granted') {
+            //     setErrorMsg('Permission to access location was denied');
+            // }
+            // let location = await Location.getCurrentPositionAsync({});
             setMapRegion({
-                longitude: location.coords.longitude,
-                latitude: location.coords.latitude,
+                longitude: -84.38633,
+                latitude: 33.753746,
                 longitudeDelta: 0.0922,
                 latitudeDelta: 0.0421
             })
             //setLocation(location)
-            const getBars = async () => {
-                // const userLocation = Location
-                // console.log(userLocation)
-                const bars = await Yelp.getBars(mapRegion);
-                setBars(bars)
-                // console.log(bars)
-                return bars
-            };
 
-            getBars();
         })();
     }, []);
-    console.log(bars)
+    useEffect(() => {
+        const getBars = async () => {
+            // const userLocation = Location
+            // console.log(userLocation)
+
+            //if I leave this page, restart the app, the page doesn't work. 
+            //I've added a console.log here, now it works. there's an error but not consistent
+            const bars = await Yelp.getBars(mapRegion)
+            setBars(bars)
+            console.log(bars)
+            return bars
+        };
+        if (mapRegion) {
+            getBars()
+            console.log(bars)
+        };
+    }, [mapRegion])
+    // console.log('******* BARS AGAIN ********')
+    // console.log(bars)
     // console.log(mapRegion)
     // const getBars = async () => {
     //     const userLocation = Location
@@ -60,16 +69,13 @@ const BarMap = ({ navigation }) => {
     //     // Add this line for some reason
     //     await getBars();
     // }
-    const barMarkers = () => {
-        return
-    }
 
 
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.topbarContainer}>
                 <TouchableOpacity onPress={() => navigation.navigate('BarMap')}>
-                    <FontAwesome5 name='search' size={28} color="#000" />
+                    <FontAwesome5 name='search-location' size={28} color="#000" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => navigation.navigate('Home')}>
                     <FontAwesome5 name='glass-martini-alt' size={28} color="#000" />
@@ -82,21 +88,17 @@ const BarMap = ({ navigation }) => {
             <View>
                 <StatusBar style="dark" />
                 <MapView initialRegion={mapRegion} mapType='hybrid' style={styles.mapView} >
-                    <Marker coordinate={mapRegion} title="Me">
+                    {mapRegion && <Marker coordinate={mapRegion} title="Me">
                         <View style={styles.circle}>
                             <View style={styles.stroke} />
                             <View style={styles.core} />
                         </View>
-                    </Marker>
-                    {bars.map((bar) => <Marker coordinate={bar.coords} title={`${bar.name}`} />)}
-                    {/* {bars.length && bars.map((bar, i) => {
+                    </Marker>}
+                    {/* {bars.map((bar, i) => <Marker key={i} coordinate={bar.coords} title={`${bar.name}`} description={bar.display_address} image={bar.image} />)} */}
+                    {bars && bars.length > 0 && bars.map((bar, i) => {
                         console.log(bar)
-                        return <Marker coordinate={bar.coords} >
-                            <View style={styles.circle}>
-                                <Text>{bar.name}</Text>
-                            </View>
-                        </Marker>
-                    })} */}
+                        return <Marker key={i} coordinate={bar.coords} title={`${bar.name}`} description={bar.display_address} image={bar.image} />
+                    })}
                 </MapView>
             </View>
         </SafeAreaView>

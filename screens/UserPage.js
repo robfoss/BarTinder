@@ -15,9 +15,9 @@ export default function UserPage({ navigation }) {
   const fetchFavorites = async () => {
     console.log('************** USER PAGE FETCH FAVORITES *****************')
     try {
-      res = await axios.get(`${url}/api/user/favorites/:user_id`)
+      const res = await axios.get(`${url}/api/user/favorites`)
+      setFavorites(res.data)
       console.log(res.data)
-      setFavorites[res.data]
     } catch (error) {
       console.log(error)
     }
@@ -25,13 +25,13 @@ export default function UserPage({ navigation }) {
   useEffect(() => {
     fetchFavorites();
   }, []);
-
-
+  console.log('**************** 88888888888 ********************')
+  console.log(favorites)
   return (
-    <>
+    <SafeAreaView>
       <View style={styles.topbarContainer}>
         <TouchableOpacity onPress={() => navigation.navigate('BarMap')}>
-          <FontAwesome5 name='search' size={28} color="#000" />
+          <FontAwesome5 name='search-location' size={28} color="#000" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <FontAwesome5 name='glass-martini-alt' size={28} color="#000" />
@@ -41,16 +41,20 @@ export default function UserPage({ navigation }) {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
+        <Text>{favorites.length}</Text>
         <ScrollView>
-          {favorites.map((favorite) => <BlockCard favorite={favorite} key={favorite.id} />)}
-          {/* onPress={() => navigation.navigate('CocktailCard', { cocktails })} */}
+          {favorites.map((favorites) => (
+            <BlockCard favorites={favorites}
+            />)
+          )}
         </ScrollView>
       </View>
-    </>
+    </SafeAreaView>
 
 
   );
 }
+
 
 
 const styles = StyleSheet.create({
@@ -68,5 +72,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.12,
     shadowRadius: 5.46,
     elevation: 9
-  }
+  },
+  photo: {
+    height: "99%",
+    resizeMode: "stretch",
+    borderRadius: 20,
+  },
 })
