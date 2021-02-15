@@ -6,10 +6,8 @@ import { url } from '../config';
 //Add image
 //Testing scrollview
 export default function SwipeableImage({ cocktails, willLike, willPass }) {
-    console.log(cocktails.name)
-    console.log(cocktails.image)
-
-
+    // console.log(cocktails.name)
+    // console.log(cocktails.image)
     const image = {
         uri: url + cocktails.image,
     }
@@ -36,8 +34,8 @@ export default function SwipeableImage({ cocktails, willLike, willPass }) {
                         {cocktails.name}
                     </Text>
                 </View>
-                <View style={styles.textRow}>
-                    <Text numberOfLines={2} style={([styles.textSecondary], styles.textShadow)}>
+                <View style={styles.textRowDesc}>
+                    <Text numberOfLines={6} style={([styles.textSecondary, styles.textShadow])}>
                         {cocktails.description}
                     </Text>
                 </View>
@@ -70,18 +68,23 @@ const styles = StyleSheet.create({
     },
     photo: {
         height: "99%",
-        resizeMode: "cover",
+        resizeMode: "stretch",
         borderRadius: 20,
     },
 
     textContainer: {
         position: "absolute",
-        bottom: 20,
+        bottom: 70,
         left: 20,
     },
     textRow: {
         flexDirection: "row",
         alignItems: "center",
+    },
+    textRowDesc: {
+        flexDirection: "row",
+        alignItems: "center",
+        width: '90%'
     },
     textPrimary: {
         color: "white",
@@ -91,11 +94,11 @@ const styles = StyleSheet.create({
     textSecondary: {
         color: "white",
         marginLeft: 10,
-        fontSize: 21,
+        fontSize: 20,
     },
     textShadow: {
-        textShadowColor: "rgba(0, 0, 0, 0.80)",
-        textShadowOffset: { width: -1, height: 1 },
+        textShadowColor: "rgba(0, 0, 0, 0.90)",
+        textShadowOffset: { width: -1, height: 2 },
         textShadowRadius: 10,
     },
 });

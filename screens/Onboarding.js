@@ -2,7 +2,7 @@ import * as React from 'react';
 import { StatusBar, Animated, Text, Image, View, StyleSheet, Dimensions } from 'react-native';
 import { TouchableOpacity, FlatList } from 'react-native-gesture-handler';
 import { Asset } from 'expo-asset';
-
+import Home from './Home'
 
 const { width, height } = Dimensions.get('screen');
 
@@ -24,19 +24,19 @@ const DATA = [
   {
     "key": "3571747",
     "title": "BarTinder",
-    "description": "",
+    "description": "Is a fun Full Stack mobile application that provides users with cocktail recipes, storage of Favorite cocktails, and locations of nearby cocktail bars. ",
     "image": bartinderlogoCab
   },
   {
     "key": "3571680",
-    "title": "Inverse attitude-oriented system engine",
-    "description": "The ADP array is down, compress the online sensor so we can input the HTTP panel!",
+    "title": "Front End",
+    "description": "Developed in React Native and Expo. The BarTinder Logo by Rob Foss - made w/ Adobe Illustrator",
     "image": bartinderlogo
   },
   {
     "key": "3571603",
-    "title": "Monitored global data-warehouse",
-    "description": "We need to program the open-source IB interface!",
+    "title": "Back End",
+    "description": "Developed w/ ExpressJS, NodeJS, Sequelize, cocktail data provided by the WWW (in JSON format)",
     "image": bartinderlogo
   }
 ]
@@ -161,6 +161,7 @@ export default function Onboarding() {
             <View style={{ flex: .3 }}>
               <Text style={{ color: '#fff', fontWeight: '800', fontSize: 28, marginBottom: 10 }}>{item.title}</Text>
               <Text style={{ color: '#fff', fontWeight: '300' }}>{item.description}</Text>
+
             </View>
           </View>
         }}

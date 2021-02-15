@@ -17,10 +17,10 @@ const BlockCard = () => {
         <View style={styles.container}>
             <Image source={image} style={style.image} />
             <View style={styles.contentContainer}>
-                <Title>{cocktails.name}</Title>
-                <Subtitle>{cocktails.description}</Subtitle>
-                <Text>{cocktails.ingredients}</Text>
-                <Text>{cocktails.directions}</Text>
+                <Title>{favorites.name}</Title>
+                <Subtitle>{favorites.description}</Subtitle>
+                <Text>{favorites.ingredients}</Text>
+                <Text>{favorites.directions}</Text>
             </View>
         </View>
     )

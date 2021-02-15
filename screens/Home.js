@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Text, StyleSheet, Alert, TouchableOpacity, } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity, Dimensions } from "react-native";
 import Constants from "expo-constants";
 import axios from "axios";
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
@@ -12,7 +12,7 @@ import { url } from '../config';
 //look-up useEffect again - causing errors
 //look-up useRef
 //look at gesture docs again for swipe handler
-
+const height = Dimensions.get('screen')
 export default function Home({ navigation }) {
   const [cocktails, setCocktails] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -27,15 +27,15 @@ export default function Home({ navigation }) {
   //   }
   // }
   const newFavorite = async (cocktail_id) => {
-    console.log('*************** HOMESCREEN FAVORITES TOP *************')
+    // console.log('*************** HOMESCREEN FAVORITES TOP *************')
     try {
       const res = await axios.put(`${url}/api/user/newfavorite/${cocktail_id}`)
       // headers: {
       //   'Accept': 'application/json',
       //   'Content-Type': 'application/json'
 
-      console.log('*************** HOMESCREEN FAVORITES *************')
-      console.log(res.data)
+      // console.log('*************** HOMESCREEN FAVORITES *************')
+      // console.log(res.data)
       setFavorites(res.data)
     } catch (error) {
       console.log(error)
@@ -47,7 +47,7 @@ export default function Home({ navigation }) {
 
   const fetchCocktails = async () => {
     try {
-      const res = await axios.get(`${url}/api/cocktails/cocktailcards`, {
+      const res = await axios.get(`${url}/api/cocktails/cocktailcards/:id`, {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -99,8 +99,10 @@ export default function Home({ navigation }) {
   };
 
   return (
-    <>
-      <View style={styles.topBarcontainer}>
+
+
+    <View style={styles.container}>
+      <View style={[styles.topBarcontainer]}>
         <TouchableOpacity onPress={() => navigation.navigate('BarMap')}>
           <FontAwesome5 name='search' size={28} color="#000" />
         </TouchableOpacity>
@@ -111,29 +113,27 @@ export default function Home({ navigation }) {
           <FontAwesome5 name='user' size={28} color="#000" />
         </TouchableOpacity>
       </View>
-      <View style={styles.container}>
-        <View style={styles.swipes}>
-          {cocktails.length > 1 &&
-            cocktails.map(
-              (cocktails, index) =>
-                currentIndex === index && (
-                  <Swipes
-                    key={index}
-                    ref={swipesRef}
-                    currentIndex={currentIndex}
-                    cocktails={cocktails}
-                    handleLike={() => handleLike(cocktails.id)}
-                    handlePass={handlePass}
-                  />
-                )
-            )}
-        </View>
-        <BottomBar
-          handleLikePress={handLikePress}
-          handlePassPress={handlePassPress}
-        />
+      <View style={styles.swipes}>
+        {cocktails.length > 1 &&
+          cocktails.map(
+            (cocktails, index) =>
+              currentIndex === index && (
+                <Swipes
+                  key={index}
+                  ref={swipesRef}
+                  currentIndex={currentIndex}
+                  cocktails={cocktails}
+                  handleLike={() => handleLike(cocktails.id)}
+                  handlePass={handlePass}
+                />
+              )
+          )}
       </View>
-    </>
+      <BottomBar
+        handleLikePress={handLikePress}
+        handlePassPress={handlePassPress}
+      />
+    </View>
   );
 }
 

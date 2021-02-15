@@ -1,12 +1,32 @@
-import React from "react";
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
+import { url } from '../config'
 
 
 import FlatCard from '../components/FlatCard'
+import BlockCard from '../components/BlockCard'
+import axios from "axios";
 
 
 export default function UserPage({ navigation }) {
+  const [favorites, setFavorites] = useState([]);
+
+  const fetchFavorites = async () => {
+    console.log('************** USER PAGE FETCH FAVORITES *****************')
+    try {
+      res = await axios.get(`${url}/api/user/favorites/:user_id`)
+      console.log(res.data)
+      setFavorites[res.data]
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  useEffect(() => {
+    fetchFavorites();
+  }, []);
+
+
   return (
     <>
       <View style={styles.topbarContainer}>
@@ -22,10 +42,12 @@ export default function UserPage({ navigation }) {
       </View>
       <View style={styles.container}>
         <ScrollView>
-          {data.map((cocktails) => <FlatCard cocktails={cocktails} key={cocktails.id} onPress={() => navigation.navigate('CocktailCard', { cocktails })} />)}
+          {favorites.map((favorite) => <BlockCard favorite={favorite} key={favorite.id} />)}
+          {/* onPress={() => navigation.navigate('CocktailCard', { cocktails })} */}
         </ScrollView>
       </View>
     </>
+
 
   );
 }
